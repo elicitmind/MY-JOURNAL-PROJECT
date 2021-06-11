@@ -14,11 +14,14 @@ app.use(express.urlencoded({
 }));
 app.use(express.static("public"));
 
+const allPosts = []
+
 
 app.get("/", (req, res) => {
   res.render("home", {
     homeContent: homeContent,
   })
+  console.log(allPosts)
 })
 
 app.get("/about", (req, res) => {
@@ -38,7 +41,11 @@ app.get("/compose", (req, res) => {
 })
 
 app.post("/compose", (req, res) => {
-  console.log(req.body.newPost)
+  const newPost = { title: req.body.newPostTitle,
+    content: req.body.newPostBody
+  }
+allPosts.push(newPost)
+  
   res.redirect("/")
 })
 
