@@ -51,6 +51,19 @@ app.post("/compose", (req, res) => {
   res.redirect("/")
 })
 
+app.get("/posts/:postName", (req, res) => {
+  const requestedTitle = req.params.postName
+  allPosts.forEach(element => {
+    if (element.title == requestedTitle) {
+      console.log("y")
+    } else {
+      return
+    }
+  })
+})
+
+
+
 
 
 
