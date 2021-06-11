@@ -20,8 +20,9 @@ const allPosts = []
 app.get("/", (req, res) => {
   res.render("home", {
     homeContent: homeContent,
+    allPosts: allPosts
   })
-  console.log(allPosts)
+
 })
 
 app.get("/about", (req, res) => {
@@ -41,11 +42,12 @@ app.get("/compose", (req, res) => {
 })
 
 app.post("/compose", (req, res) => {
-  const newPost = { title: req.body.newPostTitle,
+  const newPost = {
+    title: req.body.newPostTitle,
     content: req.body.newPostBody
   }
-allPosts.push(newPost)
-  
+  allPosts.push(newPost)
+
   res.redirect("/")
 })
 
