@@ -44,3 +44,9 @@ h1 {
     margin: 2rem 0;
 }
 
+.truncate {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 800px;
+}

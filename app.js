@@ -45,7 +45,8 @@ app.get("/compose", (req, res) => {
 app.post("/compose", (req, res) => {
   const newPost = {
     title: req.body.newPostTitle,
-    content: req.body.newPostBody
+    content: req.body.newPostBody,
+    //renteredTitle: _.lowerCase(req.body.newPostTitle)
   }
   allPosts.push(newPost)
 
@@ -58,14 +59,13 @@ app.get("/posts/:postName", (req, res) => {
     if (_.lowerCase(e.title) == _.lowerCase(requestedTitle)) {
       res.render("post.ejs", {
         title: e.title,
-        content: e.content
+        content: e.content,
+        
       })
-    } else {
-      res.send("wrong url")
-
     }
   })
 })
+
 
 
 
