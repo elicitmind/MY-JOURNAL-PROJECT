@@ -59,3 +59,7 @@ body {
 .page-container {
     padding-bottom: 7rem;
 }
+
+p {
+    white-space: pre-wrap;
+}
