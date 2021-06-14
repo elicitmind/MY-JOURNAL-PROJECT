@@ -50,3 +50,12 @@ h1 {
     overflow: hidden;
     width: 800px;
 }
+
+body {
+    position: relative;
+  min-height: 100vh;
+}
+
+.page-container {
+    padding-bottom: 7rem;
+}
