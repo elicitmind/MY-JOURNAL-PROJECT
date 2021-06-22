@@ -1,7 +1,7 @@
 const express = require("express");
 const ejs = require("ejs");
 const _ = require("lodash");
-
+const mongoose = require("mongoose")
 const app = express();
 
 app.set('view engine', 'ejs');
@@ -11,31 +11,51 @@ app.use(express.urlencoded({
 }));
 app.use(express.static("public"));
 
-const MongoClient = require('mongodb').MongoClient;
-const uri = "mongodb+srv://elicitmind:WLsmyF7WS7AvAjJm@cluster0.wjc84.mongodb.net/blogDb?retryWrites=true&w=majority";
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+const homeContent = "I realized that the meaning of my life is to achieve, learn and experience. I have to be disciplined and proactive! My character traits are the tools with which I conquer impossible task, despite of the results - there is an action and experience, my will was to act so I act and here comes my improvement - I CREATE. I GROW by doing, solving, achieving, falling, fixing and keep coming back. I went too far, you may not understand, there is no turning back on a way straight up to be God."
 
-const homeContent = "I realized that the meaning of my life is to achieve, learn and experience. I have to be disciplined and brave! My character traits are the tools with which I conquer impossible task, despite the results - there is action and experience, my will was to act so I act and here comes my improvement. I grow by doing, trying, achieving, falling and keep coming back. I went too far, you may not understand, there is no turning back on a way straight up to be God."
-const allPosts = []
+mongoose.connect("mongodb+srv://elicitmind:WLsmyF7WS7AvAjJm@cluster0.wjc84.mongodb.net/blogDb?retryWrites=true&w=majority", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+
+
+const postSchema = new mongoose.Schema({
+  title: String,
+  content: String
+})
+
+const Post = mongoose.model("Post", postSchema)
+
+// const homePost = new Post({
+//   title: "Home",
+//   content: homeContent
+// })
+
+
+
+
+
 
 
 app.get("/", (req, res) => {
+  Post.find({}, (err, results) => {
   res.render("home", {
     homeContent: homeContent,
-    allPosts: allPosts
+    allPosts: results
   })
-
 })
+})
+
 
 app.get("/about", (req, res) => {
   res.render("about.ejs", {
-    aboutContent: aboutContent
+    aboutContent: "about me"
   })
 })
 
 app.get("/contact", (req, res) => {
   res.render("contact.ejs", {
-    contactContent: contactContent
+    contactContent: "elicitmind@gmail.com"
   })
 })
 
@@ -44,12 +64,24 @@ app.get("/compose", (req, res) => {
 })
 
 app.post("/compose", (req, res) => {
-  const newPost = {
-    title: req.body.newPostTitle,
-    content: req.body.newPostBody,
-    //renteredTitle: _.lowerCase(req.body.newPostTitle)
-  }
-  allPosts.push(newPost)
+  const title = req.body.newPostTitle
+  const content = req.body.newPostBody
+
+  Post.create({
+    title: title,
+    content: content
+  }, (err) => {
+    if (err) {
+      console.log(err)
+  } else {
+    console.log("success")
+  }})
+
+
+  // console.log(req.body.newPostTitle)
+  // console.log(req.body.newPostBody)
+
+
 
   res.redirect("/")
 })
@@ -61,7 +93,7 @@ app.get("/posts/:postName", (req, res) => {
       res.render("post.ejs", {
         title: e.title,
         content: e.content,
-        
+
       })
     }
   })
