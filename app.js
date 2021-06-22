@@ -75,10 +75,11 @@ app.post("/compose", (req, res) => {
     if (err) {
       console.log(err)
   } else {
-    console.log("success")
+    console.log("success") 
+    res.redirect("/")
   }})
 
-  res.redirect("/")
+ 
 })
 
 app.get("/posts/:postId", (req, res) => {
